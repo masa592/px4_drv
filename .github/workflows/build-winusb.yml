@@ -1,0 +1,29 @@
+name: Build px4_drv (WinUSB)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: feature/torne-winusb
+
+      - name: Run build script
+        shell: pwsh
+        run: |
+          ./px4_drv-feature-torne-winusb/px4_drv-feature-torne-winusb/build.ps1
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: px4_drv-winusb-binaries
+          path: |
+            **/*.sys
+            **/*.dll
+            **/*.exe
+            **/*.inf
