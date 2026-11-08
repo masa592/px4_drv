@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-only
 #include "dt295_receiver.hpp"
 #include "dt295_device.hpp"
-#include "../msg.h"
+#include "msg.h"
 
 #include <algorithm>
 #include <chrono>
