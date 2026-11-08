@@ -1,0 +1,42 @@
+; PIX-DT295.inf
+; WinUSB installation for PIXELA PIX-DT295 TV Tuner
+
+[Version]
+Signature   = "$Windows NT$"
+Class       = Media
+ClassGuid   = {4d36e96c-e325-11ce-bfc1-08002be10318}
+Provider    = %ProviderName%
+CatalogFile = px4_drv_winusb.cat
+DriverVer   = 10/29/2026,1.0.0.1
+
+[Manufacturer]
+%ManufacturerName% = DeviceList,NTamd64,NTarm64
+
+[DeviceList.NTamd64]
+%DeviceName% = WinUSBInstall, USB\VID_06B8&PID_103B
+
+[DeviceList.NTarm64]
+%DeviceName% = WinUSBInstall, USB\VID_06B8&PID_103B
+
+[WinUSBInstall]
+Include = winusb.inf
+Needs   = WINUSB.NT
+AddProperty = DeviceSetup.AddProperty
+
+[WinUSBInstall.Services]
+Include = winusb.inf
+Needs   = WINUSB.NT.Services
+
+[WinUSBInstall.HW]
+AddReg = DeviceInterfaceGUID
+
+[DeviceInterfaceGUID]
+HKR,,DeviceInterfaceGUIDs,0x10000,"{D2950000-06B8-103B-A000-00805F9B34FB}"
+
+[DeviceSetup.AddProperty]
+{afd97640-86a3-4210-b67c-289c41aabe55},3,0x00000011,,0   ;DEVPKEY_Device_SafeRemovalRequiredOverride=FALSE
+
+[Strings]
+ProviderName     = "px4_drv (dt295)"
+ManufacturerName = "PIXELA"
+DeviceName       = "PIXELA PIX-DT295 TV Tuner (WinUSB)"
