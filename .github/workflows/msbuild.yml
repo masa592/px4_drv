@@ -1,0 +1,73 @@
+name: Build and Check MSBuild WinUSB (with PX-S1UD)
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+      - master
+  push:
+    branches:
+      - develop
+      - main
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build MSBuild and Run Tests
+    runs-on: windows-2022
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Verify driver INF encoding and formats
+        working-directory: winusb/pkg/signing-tools
+        run: |
+          ./verify.ps1 -DriverPath ../inf
+
+      - name: Build BonDriver_S1UD_WinUSB (x64 Release)
+        run: |
+          .\build_x64.cmd
+
+      - name: Build and Run TS Framer Unit Tests (x64)
+        run: |
+          msbuild winusb/tests/ts_framer_test.vcxproj /p:Configuration=Release-static /p:Platform=x64 /m
+          & "winusb/build/x64/Release-static/ts_framer_test.exe"
+
+      - name: Build WinUSB package (Full)
+        working-directory: winusb
+        run: |
+          ./build.ps1
+
+      - name: Check S1UD Artifacts
+        working-directory: winusb
+        run: |
+          $s1ud_dirs = @('dist/BonDriver_S1UD_WinUSB_32bit', 'dist/BonDriver_S1UD_WinUSB_64bit')
+          foreach ($dir in $s1ud_dirs) {
+              if (-not (Test-Path $dir -PathType Container)) {
+                  throw "Missing directory: $dir"
+              }
+              $dll = Join-Path $dir 'BonDriver_S1UD_WinUSB.dll'
+              $ini = Join-Path $dir 'BonDriver_S1UD_WinUSB.ini'
+              if (-not (Test-Path $dll -PathType Leaf)) { throw "Missing: $dll" }
+              if (-not (Test-Path $ini -PathType Leaf)) { throw "Missing: $ini" }
+              Write-Host "Confirmed artifact: $dll"
+              Write-Host "Confirmed artifact: $ini"
+          }
+
+      - name: Upload WinUSB and S1UD Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: px4_drv_winusb_artifacts
+          path: |
+            winusb/dist/
+            winusb/pkg/inf/PX-S1UD.inf
