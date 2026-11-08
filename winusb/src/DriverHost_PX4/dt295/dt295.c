@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 /* PIX-DT295 target-0 protocol. State-changing commands are never retried. */
 #include "dt295.h"
 #include "crypto.h"
