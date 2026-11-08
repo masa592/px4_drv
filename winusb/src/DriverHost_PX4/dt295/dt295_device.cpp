@@ -2,7 +2,7 @@
 #include "dt295_device.hpp"
 #include "dt295_receiver.hpp"
 #include "../receiver_manager.hpp"
-#include "../msg.h"
+#include "msg.h"
 
 #include <chrono>
 #include <fstream>
