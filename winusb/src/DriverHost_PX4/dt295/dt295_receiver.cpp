@@ -4,15 +4,17 @@
 #include "msg.h"
 
 #include <algorithm>
+#include <cinttypes>
 #include <chrono>
 #include <cstring>
 
 namespace px4::dt295 {
 
 Dt295Receiver::Dt295Receiver(Dt295Device &parent, std::uintptr_t index)
-	: parent_(parent), index_(index)
+	: ReceiverBase(RECEIVER_WAIT_AFTER_LOCK_TC_T),
+	parent_(parent),
+	index_(index)
 {
-	options_ = RECEIVER_WAIT_AFTER_LOCK_TC_T;
 }
 
 Dt295Receiver::~Dt295Receiver()
