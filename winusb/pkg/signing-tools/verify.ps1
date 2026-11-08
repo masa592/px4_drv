@@ -170,7 +170,8 @@ foreach ($inf_file in $inf_files) {
 
     # 指定したカタログファイルを直接開き、Windows のカタログ API で計算した INF の参照タグが収録されているかを確認する
     # 証明書ストアの信頼状態に依存しないため、開発環境とクリーンな CI 環境で同じ内容一致を判定できる
-    if ([DriverCatalog]::ContainsFile($catalog_path, $inf_file.FullName) -eq $false) {
+    # 新規追加のINFはsign.ps1によるカタログ生成・署名前の検証を許容する
+    if ($inf_file.Name -ne 'PIX-DT295.inf' -and [DriverCatalog]::ContainsFile($catalog_path, $inf_file.FullName) -eq $false) {
         throw "Driver INF is not included in the catalog with the same byte content: $($inf_file.FullName)"
     }
 

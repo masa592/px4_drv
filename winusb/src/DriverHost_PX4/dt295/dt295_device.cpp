@@ -225,16 +225,25 @@ int Dt295Device::BulkCallback(void *user, uint8_t endpoint, uint8_t *data, size_
 	ULONG transferred = 0;
 	BOOL ok = FALSE;
 
+	DWORD err = ERROR_SUCCESS;
 	if (endpoint & 0x80) {
 		ok = WinUsb_ReadPipe(winusb, endpoint, data, static_cast<ULONG>(length), &transferred, nullptr);
+		if (!ok)
+			err = GetLastError();
 	} else {
 		ok = WinUsb_WritePipe(winusb, endpoint, data, static_cast<ULONG>(length), &transferred, nullptr);
+		if (!ok)
+			err = GetLastError();
 	}
 
 	if (actual)
 		*actual = transferred;
 
-	return ok ? 0 : -1;
+	if (ok)
+		return 0;
+	if (err == ERROR_SEM_TIMEOUT || err == ERROR_TIMEOUT)
+		return -7; // USB_TIMEOUT
+	return -1;
 }
 
 int Dt295Device::InterruptCallback(void *user, uint8_t endpoint, uint8_t *data, size_t length,

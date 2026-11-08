@@ -1,42 +1,44 @@
-; PIX-DT295.inf
-; WinUSB installation for PIXELA PIX-DT295 TV Tuner
-
+;
+; PIXELA PIX-DT295 WinUSB
+;
 [Version]
-Signature   = "$Windows NT$"
-Class       = Media
-ClassGuid   = {4d36e96c-e325-11ce-bfc1-08002be10318}
-Provider    = %ProviderName%
-CatalogFile = px4_drv_winusb.cat
-DriverVer   = 10/29/2026,1.0.0.1
+Signature="$Windows NT$"
+Class=Media
+ClassGuid={4d36e96c-e325-11ce-bfc1-08002be10318}
+Provider=%AuthorName%
+DriverVer=05/01/2021,21.05.01.00
+CatalogFile=px4_drv_winusb.cat
 
 [Manufacturer]
-%ManufacturerName% = DeviceList,NTamd64,NTarm64
+%AuthorName%=PIXDT295_WinUSB,ntx86,ntamd64,ntarm64
 
-[DeviceList.NTamd64]
-%DeviceName% = WinUSBInstall, USB\VID_06B8&PID_103B
+[PIXDT295_WinUSB.ntx86]
+%PIXDT295_WinUSB.DeviceDesc%=PIXDT295_WinUSB.DeviceInstall,USB\VID_06B8&PID_103B
 
-[DeviceList.NTarm64]
-%DeviceName% = WinUSBInstall, USB\VID_06B8&PID_103B
+[PIXDT295_WinUSB.ntamd64]
+%PIXDT295_WinUSB.DeviceDesc%=PIXDT295_WinUSB.DeviceInstall,USB\VID_06B8&PID_103B
 
-[WinUSBInstall]
-Include = winusb.inf
-Needs   = WINUSB.NT
-AddProperty = DeviceSetup.AddProperty
+[PIXDT295_WinUSB.ntarm64]
+%PIXDT295_WinUSB.DeviceDesc%=PIXDT295_WinUSB.DeviceInstall,USB\VID_06B8&PID_103B
 
-[WinUSBInstall.Services]
-Include = winusb.inf
-Needs   = WINUSB.NT.Services
+[PIXDT295_WinUSB.DeviceInstall]
+Include=winusb.inf
+Needs=WINUSB.NT
+AddProperty=PIXDT295_WinUSB.DeviceSetup.AddProperty
 
-[WinUSBInstall.HW]
-AddReg = DeviceInterfaceGUID
+[PIXDT295_WinUSB.DeviceInstall.Services]
+Include=winusb.inf
+Needs=WINUSB.NT.Services
 
-[DeviceInterfaceGUID]
-HKR,,DeviceInterfaceGUIDs,0x10000,"{D2950000-06B8-103B-A000-00805F9B34FB}"
+[PIXDT295_WinUSB.DeviceInstall.HW]
+AddReg=PIXDT295_WinUSB.DeviceSetup.AddReg
 
-[DeviceSetup.AddProperty]
+[PIXDT295_WinUSB.DeviceSetup.AddReg]
+HKR,,DeviceInterfaceGUIDs,0x00010000,"{D2950000-06B8-103B-A000-00805F9B34FB}"
+
+[PIXDT295_WinUSB.DeviceSetup.AddProperty]
 {afd97640-86a3-4210-b67c-289c41aabe55},3,0x00000011,,0   ;DEVPKEY_Device_SafeRemovalRequiredOverride=FALSE
 
 [Strings]
-ProviderName     = "px4_drv (dt295)"
-ManufacturerName = "PIXELA"
-DeviceName       = "PIXELA PIX-DT295 TV Tuner (WinUSB)"
+AuthorName="nns779"
+PIXDT295_WinUSB.DeviceDesc="PIXELA PIX-DT295 ISDB-T/S Receiver Device (WinUSB)"

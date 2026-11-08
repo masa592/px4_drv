@@ -325,6 +325,10 @@ void Dt295Receiver::StreamWorker()
 			last_renew = now;
 		}
 
+		if (buffered + 65536 > raw_buf.size()) {
+			raw_buf.resize(buffered + 65536 * 2);
+		}
+
 		size_t actual = 0;
 		int rc = parent_.ReadStreamBulk(raw_buf.data() + buffered, 65536, 100, &actual);
 		if (rc != 0 && actual == 0) {
