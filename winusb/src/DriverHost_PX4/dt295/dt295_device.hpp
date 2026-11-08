@@ -1,0 +1,39 @@
+// SPDX-License-Identifier: GPL-2.0-only
+#pragma once
+
+#include "../device_base.hpp"
+#include <atomic>
+#include <memory>
+#include <mutex>
+#include <string>
+
+namespace px4::dt295 {
+
+class Dt295Device final : public px4::DeviceBase {
+public:
+	Dt295Device(const std::wstring &path, const px4::DeviceDefinition &definition,
+		std::uintptr_t index, px4::ReceiverManager &manager);
+	~Dt295Device() override;
+
+	int Init() override;
+	void Term() override;
+	void SetAvailability(bool available) override;
+	px4::ReceiverBase *GetReceiver(int id) const override;
+
+	bool HasCardReader() const noexcept override { return true; }
+	int OpenCard() override;
+	void CloseCard() override;
+	int DetectCard(bool &detected) override;
+	int ResetCard() override;
+	int SetCardBaudrate(::it930x_uart_baudrate baudrate) override;
+	int IsCardDataReady(bool &ready) override;
+	int ReadCardData(std::uint8_t *buf, std::uint8_t &len) override;
+	int WriteCardData(const std::uint8_t *buf, std::uint8_t len) override;
+
+private:
+	std::atomic_bool available_{true};
+	bool registered_ = false;
+	std::mutex card_mutex_;
+};
+
+} // namespace px4::dt295

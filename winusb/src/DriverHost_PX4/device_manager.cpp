@@ -12,6 +12,7 @@
 #include "pxmlt_device.hpp"
 #include "isdb2056_device.hpp"
 #include "isdbt2071_device.hpp"
+#include "dt295/dt295_device.hpp"
 
 namespace px4 {
 
@@ -55,6 +56,8 @@ DeviceManager::DeviceManager(const px4::DeviceDefinitionSet &device_defs, px4::R
 			type = DeviceType::ISDB2056;
 		else if (it->first == L"ISDBT2071")
 			type = DeviceType::ISDBT2071;
+		else if (it->first == L"PIXDT295")
+			type = DeviceType::PIX_DT295;
 
 		if (type == DeviceType::UNKNOWN)
 			continue;
@@ -183,6 +186,21 @@ void DeviceManager::Add(const std::wstring &path, const std::pair<DeviceType, px
 			devices_.emplace(path, std::move(dev));
 		}
 
+		break;
+	}
+
+	case px4::DeviceType::PIX_DT295:
+	{
+		try {
+			auto dev = std::make_shared<px4::dt295::Dt295Device>(path, def.second, ++index_, receiver_manager_);
+			if (!dev->Init()) {
+				if (dev->HasCardReader())
+					card_reader_generation_.fetch_add(1);
+				devices_.emplace(path, std::move(dev));
+			}
+		} catch (const std::exception &ex) {
+			msg_err("px4::DeviceManager::Add(PIX_DT295): %s\n", ex.what());
+		}
 		break;
 	}
 
