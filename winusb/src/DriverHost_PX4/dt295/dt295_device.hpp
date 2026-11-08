@@ -28,7 +28,9 @@ public:
 	void SetAvailability(bool available) override;
 	px4::ReceiverBase *GetReceiver(int id) const override;
 
-	bool HasCardReader() const noexcept override { return true; }
+	// Internal B-CAS descrambling is performed by hardware/firmware,
+	// so we do not expose a PC/SC smartcard interface to the host.
+	bool HasCardReader() const noexcept override { return false; }
 	int OpenCard() override;
 	void CloseCard() override;
 	int DetectCard(bool &detected) override;
@@ -38,8 +40,11 @@ public:
 	int ReadCardData(std::uint8_t *buf, std::uint8_t &len) override;
 	int WriteCardData(const std::uint8_t *buf, std::uint8_t len) override;
 
+	int ReadStreamBulk(uint8_t *data, size_t length, unsigned timeout_ms, size_t *actual);
+
 	::dt295 *GetDt295Handle() const noexcept { return dt295_handle_; }
 	const dt295_assets *GetAssets() const noexcept { return assets_; }
+	std::recursive_mutex &GetIoMutex() noexcept { return io_mutex_; }
 
 private:
 	static int ControlCallback(void *user, uint8_t request_type, uint8_t request, uint16_t value,
@@ -55,8 +60,7 @@ private:
 
 	std::atomic_bool available_{true};
 	bool registered_ = false;
-	std::mutex io_mutex_;
-	std::mutex card_mutex_;
+	mutable std::recursive_mutex io_mutex_;
 
 	dt295_assets *assets_ = nullptr;
 	::dt295 *dt295_handle_ = nullptr;

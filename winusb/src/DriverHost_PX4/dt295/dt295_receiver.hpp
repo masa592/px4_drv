@@ -5,6 +5,13 @@
 #include <atomic>
 #include <memory>
 #include <mutex>
+#include <thread>
+#include <vector>
+
+extern "C" {
+#include "dt295.h"
+#include "dt295_routes.h"
+}
 
 namespace px4::dt295 {
 
@@ -30,13 +37,25 @@ protected:
 	int SetStreamId() override;
 
 private:
+	void StreamWorker();
+	int StartCaptureHardware();
+	int StopCaptureHardware();
+
 	Dt295Device &parent_;
 	std::uintptr_t index_;
 
-	std::mutex lock_;
+	std::recursive_mutex lock_;
 	std::atomic_bool open_{false};
 	std::atomic_bool capturing_{false};
 	std::atomic_bool locked_{false};
+	std::atomic_bool stop_worker_{false};
+
+	std::unique_ptr<std::thread> worker_thread_;
+	dt295_routes *routes_ = nullptr;
+	dt295_route_plan live_plan_{};
+	bool hardware_started_ = false;
+	bool key_retained_ = false;
+	std::int32_t lnb_voltage_ = 0;
 };
 
 } // namespace px4::dt295

@@ -1,6 +1,6 @@
-#include "dt295_receiver.hpp"
 // SPDX-License-Identifier: GPL-2.0-only
 #include "dt295_device.hpp"
+#include "dt295_receiver.hpp"
 #include "../receiver_manager.hpp"
 #include "../msg.h"
 
@@ -47,7 +47,7 @@ std::wstring Dt295Device::FindFirmwarePath() const
 
 int Dt295Device::Init()
 {
-	std::lock_guard<std::mutex> lock(io_mutex_);
+	std::lock_guard<std::recursive_mutex> lock(io_mutex_);
 
 	std::wstring fw_path = FindFirmwarePath();
 	msg_info("px4::dt295::Dt295Device::Init: loading firmware from %ls\n", fw_path.c_str());
@@ -101,9 +101,15 @@ int Dt295Device::Init()
 	rc = dt295_card_initialize(dt295_handle_, error_buf, sizeof(error_buf));
 	if (rc != 0) {
 		msg_warn("px4::dt295::Dt295Device::Init: dt295_card_initialize warning: %s\n", error_buf);
+	} else {
+		msg_info("px4::dt295::Dt295Device::Init: executing dt295_card_activate\n");
+		rc = dt295_card_activate(dt295_handle_, 2000, error_buf, sizeof(error_buf));
+		if (rc != 0) {
+			msg_warn("px4::dt295::Dt295Device::Init: dt295_card_activate warning: %s\n", error_buf);
+		}
 	}
 
-		receiver_ = std::make_unique<Dt295Receiver>(*this, 0);
+	receiver_ = std::make_unique<Dt295Receiver>(*this, 0);
 	if (receiver_->Init() != 0) {
 		msg_err("px4::dt295::Dt295Device::Init: failed to init Dt295Receiver\n");
 		Term();
@@ -133,7 +139,7 @@ void Dt295Device::Term()
 		receiver_->Term();
 		receiver_.reset();
 	}
-	std::lock_guard<std::mutex> lock(io_mutex_);
+	std::lock_guard<std::recursive_mutex> lock(io_mutex_);
 
 	if (dt295_handle_) {
 		char error_buf[256] = {};
@@ -165,6 +171,20 @@ px4::ReceiverBase *Dt295Device::GetReceiver(int id) const
 	if (id == 0)
 		return receiver_.get();
 	return nullptr;
+}
+
+int Dt295Device::ReadStreamBulk(uint8_t *data, size_t length, unsigned timeout_ms, size_t *actual)
+{
+	WINUSB_INTERFACE_HANDLE winusb = usb_dev_.winusb;
+	if (!winusb)
+		return -1;
+
+	WinUsb_SetPipePolicy(winusb, 0x81, PIPE_TRANSFER_TIMEOUT, sizeof(timeout_ms), &timeout_ms);
+	ULONG transferred = 0;
+	BOOL ok = WinUsb_ReadPipe(winusb, 0x81, data, static_cast<ULONG>(length), &transferred, nullptr);
+	if (actual)
+		*actual = transferred;
+	return ok ? 0 : -1;
 }
 
 int Dt295Device::ControlCallback(void *user, uint8_t request_type, uint8_t request, uint16_t value,
