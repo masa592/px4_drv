@@ -393,20 +393,25 @@ void Dt295Receiver::StreamWorker()
 				if (dt295_routes_build(routes_, 0, &live_plan_, &desired, route_err) == 0) {
 					dt295_route_op ops[DT295_ROUTE_OP_LIMIT];
 					size_t op_count = 0;
-					if (dt295_routes_plan_ops(&live_plan_, &desired, ops, &op_count) == 0 && op_count > 0) {
-						std::lock_guard<std::recursive_mutex> io_lock(parent_.GetIoMutex());
-						char route_write_err[256] = {};
-						bool ok = true;
-						for (size_t oi = 0; oi < op_count; ++oi) {
-							if (dt295_route_write(device, &ops[oi], route_write_err, sizeof(route_write_err)) != 0) {
-								msg_warn("px4::dt295::Dt295Receiver::StreamWorker: dt295_route_write failed: %s\n", route_write_err);
-								ok = false;
-								break;
+					char plan_err[DT295_ROUTE_ERROR] = {};
+					if (dt295_routes_plan_ops(&live_plan_, &desired, ops, &op_count, plan_err) == 0) {
+						if (op_count > 0) {
+							std::lock_guard<std::recursive_mutex> io_lock(parent_.GetIoMutex());
+							char route_write_err[256] = {};
+							bool ok = true;
+							for (size_t oi = 0; oi < op_count; ++oi) {
+								if (dt295_route_write(device, &ops[oi], route_write_err, sizeof(route_write_err)) != 0) {
+									msg_warn("px4::dt295::Dt295Receiver::StreamWorker: dt295_route_write failed: %s\n", route_write_err);
+									ok = false;
+									break;
+								}
+							}
+							if (ok) {
+								dt295_routes_commit(&live_plan_, &desired);
 							}
 						}
-						if (ok) {
-							dt295_routes_commit(&live_plan_, &desired);
-						}
+					} else {
+						msg_warn("px4::dt295::Dt295Receiver::StreamWorker: dt295_routes_plan_ops failed: %s\n", plan_err);
 					}
 				}
 			}
