@@ -269,6 +269,12 @@
     <ClCompile Include="isdb2056_device.cpp" />
     <ClCompile Include="isdbt2071_device.cpp" />
     <ClCompile Include="dt295\dt295_device.cpp" />
+    <ClCompile Include="dt295\dt295_receiver.cpp" />
+    <ClCompile Include="dt295\dt295.c" />
+    <ClCompile Include="dt295\crypto.c" />
+    <ClCompile Include="dt295\dt295_crypto.c" />
+    <ClCompile Include="dt295\dt295_routes.c" />
+    <ClCompile Include="dt295\transport.c" />
     <ClCompile Include="itedtv_bus_winusb.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="misc_win.c" />
@@ -311,6 +317,12 @@
     <ClInclude Include="isdb2056_device.hpp" />
     <ClInclude Include="isdbt2071_device.hpp" />
     <ClInclude Include="dt295\dt295_device.hpp" />
+    <ClInclude Include="dt295\dt295_receiver.hpp" />
+    <ClInclude Include="dt295\dt295.h" />
+    <ClInclude Include="dt295\crypto.h" />
+    <ClInclude Include="dt295\dt295_crypto.h" />
+    <ClInclude Include="dt295\dt295_routes.h" />
+    <ClInclude Include="dt295\transport.h" />
     <ClInclude Include="misc_win.h" />
     <ClInclude Include="notify_icon.hpp" />
     <ClInclude Include="pipe_server.hpp" />
