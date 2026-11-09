@@ -246,6 +246,7 @@ Copy-Item pkg/BonDriver_PX4/BonDriver_S1UD.ini dist/BonDriver_S1UD_32bit/BonDriv
 Copy-Item pkg/BonDriver_PX4/BonDriver_S1UD-T.ChSet.txt dist/BonDriver_S1UD_32bit/BonDriver_S1UD-T.ChSet.txt
 Copy-Item build/x86/Release-static/DriverHost_PX4.exe dist/BonDriver_S1UD_32bit/DriverHost_PX4.exe
 Copy-Item pkg/DriverHost_PX4/DriverHost_PX4.ini dist/BonDriver_S1UD_32bit/DriverHost_PX4.ini
+Copy-Item build/x86/Release-static/WinSCard.dll dist/BonDriver_S1UD_32bit/WinSCard.dll
 Copy-Item pkg/DriverHost_PX4/it930x-firmware.bin dist/BonDriver_S1UD_32bit/it930x-firmware.bin
 Copy-Item pkg/inf/PX-S1UD.inf dist/BonDriver_S1UD_32bit/PX-S1UD.inf
 
@@ -255,6 +256,7 @@ Copy-Item pkg/BonDriver_PX4/BonDriver_S1UD.ini dist/BonDriver_S1UD_64bit/BonDriv
 Copy-Item pkg/BonDriver_PX4/BonDriver_S1UD-T.ChSet.txt dist/BonDriver_S1UD_64bit/BonDriver_S1UD-T.ChSet.txt
 Copy-Item build/x64/Release-static/DriverHost_PX4.exe dist/BonDriver_S1UD_64bit/DriverHost_PX4.exe
 Copy-Item pkg/DriverHost_PX4/DriverHost_PX4.ini dist/BonDriver_S1UD_64bit/DriverHost_PX4.ini
+Copy-Item build/x64/Release-static/WinSCard.dll dist/BonDriver_S1UD_64bit/WinSCard.dll
 Copy-Item pkg/DriverHost_PX4/it930x-firmware.bin dist/BonDriver_S1UD_64bit/it930x-firmware.bin
 Copy-Item pkg/inf/PX-S1UD.inf dist/BonDriver_S1UD_64bit/PX-S1UD.inf
 

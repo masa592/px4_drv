@@ -4,6 +4,7 @@
 #include "../receiver_base.hpp"
 #include <atomic>
 #include <memory>
+#include <chrono>
 #include <mutex>
 #include <thread>
 #include <vector>
@@ -50,7 +51,7 @@ private:
 	px_s1ud::TsFramer ts_framer_;
 
 	float last_signal_level_ = 0.0f;
-	DWORD last_stat_time_ = 0;
+	std::chrono::steady_clock::time_point last_stat_time_{};
 };
 
 } // namespace px4::s1ud
