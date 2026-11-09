@@ -174,6 +174,24 @@ jobs:
                       'BonDriver_PX-S1UR.ini',
                       'BonDriver_PX4-T.ChSet.txt'
                   )
+              },
+              @{
+                  Directory = 'dist/BonDriver_S1UD_32bit'
+                  Files = @(
+                      'BonDriver_S1UD.dll',
+                      'BonDriver_S1UD.ini',
+                      'BonDriver_S1UD-T.ChSet.txt',
+                      'PX-S1UD.inf'
+                  )
+              },
+              @{
+                  Directory = 'dist/BonDriver_S1UD_64bit'
+                  Files = @(
+                      'BonDriver_S1UD.dll',
+                      'BonDriver_S1UD.ini',
+                      'BonDriver_S1UD-T.ChSet.txt',
+                      'PX-S1UD.inf'
+                  )
               }
           )
 

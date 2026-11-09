@@ -8,7 +8,7 @@ param(
     [string] $DriverPath,
 
     [Alias('SkipInf', 'ExcludeInf')]
-    [string[]] $SkipCatalogCheck = @('PIX-DT295.inf')
+    [string[]] $SkipCatalogCheck = @('PIX-DT295.inf', 'PX-S1UD.inf')
 )
 
 # 証明書ストアへカタログファイルを登録せず、指定したカタログファイル自体から INF の収録ハッシュを照合する

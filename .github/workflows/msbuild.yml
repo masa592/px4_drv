@@ -51,17 +51,34 @@ jobs:
       - name: Check S1UD Artifacts
         working-directory: winusb
         run: |
-          $s1ud_dirs = @('dist/BonDriver_S1UD_WinUSB_32bit', 'dist/BonDriver_S1UD_WinUSB_64bit')
-          foreach ($dir in $s1ud_dirs) {
+          $s1ud_dirs = @(
+              @{
+                  Dir = 'dist/BonDriver_S1UD_32bit'
+                  Files = @('BonDriver_S1UD.dll', 'BonDriver_S1UD.ini', 'BonDriver_S1UD-T.ChSet.txt', 'DriverHost_PX4.exe', 'DriverHost_PX4.ini', 'WinSCard.dll', 'PX-S1UD.inf')
+              },
+              @{
+                  Dir = 'dist/BonDriver_S1UD_64bit'
+                  Files = @('BonDriver_S1UD.dll', 'BonDriver_S1UD.ini', 'BonDriver_S1UD-T.ChSet.txt', 'DriverHost_PX4.exe', 'DriverHost_PX4.ini', 'WinSCard.dll', 'PX-S1UD.inf')
+              },
+              @{
+                  Dir = 'dist/BonDriver_S1UD_WinUSB_32bit'
+                  Files = @('BonDriver_S1UD_WinUSB.dll', 'BonDriver_S1UD_WinUSB.ini')
+              },
+              @{
+                  Dir = 'dist/BonDriver_S1UD_WinUSB_64bit'
+                  Files = @('BonDriver_S1UD_WinUSB.dll', 'BonDriver_S1UD_WinUSB.ini')
+              }
+          )
+          foreach ($entry in $s1ud_dirs) {
+              $dir = $entry.Dir
               if (-not (Test-Path $dir -PathType Container)) {
                   throw "Missing directory: $dir"
               }
-              $dll = Join-Path $dir 'BonDriver_S1UD_WinUSB.dll'
-              $ini = Join-Path $dir 'BonDriver_S1UD_WinUSB.ini'
-              if (-not (Test-Path $dll -PathType Leaf)) { throw "Missing: $dll" }
-              if (-not (Test-Path $ini -PathType Leaf)) { throw "Missing: $ini" }
-              Write-Host "Confirmed artifact: $dll"
-              Write-Host "Confirmed artifact: $ini"
+              foreach ($file in $entry.Files) {
+                  $filePath = Join-Path $dir $file
+                  if (-not (Test-Path $filePath -PathType Leaf)) { throw "Missing: $filePath" }
+                  Write-Host "Confirmed artifact: $filePath"
+              }
           }
 
       - name: Upload WinUSB and S1UD Artifacts

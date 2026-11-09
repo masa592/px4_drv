@@ -87,6 +87,8 @@ New-Item -ItemType Directory dist/BonDriver_PX-S1UR_32bit
 New-Item -ItemType Directory dist/BonDriver_PX-S1UR_64bit
 New-Item -ItemType Directory dist/BonDriver_PIX-DT295_32bit
 New-Item -ItemType Directory dist/BonDriver_PIX-DT295_64bit
+New-Item -ItemType Directory dist/BonDriver_S1UD_32bit
+New-Item -ItemType Directory dist/BonDriver_S1UD_64bit
 New-Item -ItemType Directory dist/BonDriver_S1UD_WinUSB_32bit
 New-Item -ItemType Directory dist/BonDriver_S1UD_WinUSB_64bit
 
@@ -237,6 +239,24 @@ Copy-Item build/x64/Release-static/DriverHost_PX4.exe dist/BonDriver_PIX-DT295_6
 Copy-Item pkg/DriverHost_PX4/DriverHost_PX4.ini dist/BonDriver_PIX-DT295_64bit/DriverHost_PX4.ini
 Copy-Item pkg/DriverHost_PX4/it930x-firmware.bin dist/BonDriver_PIX-DT295_64bit/it930x-firmware.bin
 Copy-Item pkg/DriverHost_PX4/dt295.bin dist/BonDriver_PIX-DT295_64bit/dt295.bin
+
+# BonDriver_S1UD_32bit のファイルをコピー
+Copy-Item build/x86/Release-static/BonDriver_PX4.dll dist/BonDriver_S1UD_32bit/BonDriver_S1UD.dll
+Copy-Item pkg/BonDriver_PX4/BonDriver_S1UD.ini dist/BonDriver_S1UD_32bit/BonDriver_S1UD.ini
+Copy-Item pkg/BonDriver_PX4/BonDriver_S1UD-T.ChSet.txt dist/BonDriver_S1UD_32bit/BonDriver_S1UD-T.ChSet.txt
+Copy-Item build/x86/Release-static/DriverHost_PX4.exe dist/BonDriver_S1UD_32bit/DriverHost_PX4.exe
+Copy-Item pkg/DriverHost_PX4/DriverHost_PX4.ini dist/BonDriver_S1UD_32bit/DriverHost_PX4.ini
+Copy-Item pkg/DriverHost_PX4/it930x-firmware.bin dist/BonDriver_S1UD_32bit/it930x-firmware.bin
+Copy-Item pkg/inf/PX-S1UD.inf dist/BonDriver_S1UD_32bit/PX-S1UD.inf
+
+# BonDriver_S1UD_64bit のファイルをコピー
+Copy-Item build/x64/Release-static/BonDriver_PX4.dll dist/BonDriver_S1UD_64bit/BonDriver_S1UD.dll
+Copy-Item pkg/BonDriver_PX4/BonDriver_S1UD.ini dist/BonDriver_S1UD_64bit/BonDriver_S1UD.ini
+Copy-Item pkg/BonDriver_PX4/BonDriver_S1UD-T.ChSet.txt dist/BonDriver_S1UD_64bit/BonDriver_S1UD-T.ChSet.txt
+Copy-Item build/x64/Release-static/DriverHost_PX4.exe dist/BonDriver_S1UD_64bit/DriverHost_PX4.exe
+Copy-Item pkg/DriverHost_PX4/DriverHost_PX4.ini dist/BonDriver_S1UD_64bit/DriverHost_PX4.ini
+Copy-Item pkg/DriverHost_PX4/it930x-firmware.bin dist/BonDriver_S1UD_64bit/it930x-firmware.bin
+Copy-Item pkg/inf/PX-S1UD.inf dist/BonDriver_S1UD_64bit/PX-S1UD.inf
 
 # BonDriver_S1UD_WinUSB_32bit のファイルをコピー
 Copy-Item build/x86/Release-static/BonDriver_S1UD_WinUSB.dll dist/BonDriver_S1UD_WinUSB_32bit/BonDriver_S1UD_WinUSB.dll
