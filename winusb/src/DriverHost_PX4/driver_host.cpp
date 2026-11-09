@@ -69,13 +69,24 @@ void DriverHost::Run()
 	stream_server_.reset(new px4::StreamServer(receiver_manager_));
 	card_server_.reset(new px4::CardServer(*device_manager_, receiver_manager_));
 
-	if (!ctrl_server_->Start())
+	msg_info("px4::DriverHost::Run: Starting CtrlServer...\n");
+	if (!ctrl_server_->Start()) {
+		msg_err("px4::DriverHost::Run: CtrlServer::Start() failed (err=%lu)\n", GetLastError());
 		throw DriverHostError("px4::DriverHost::Run: CtrlServer::Start() failed.");
-	if (!stream_server_->Start())
+	}
+	msg_info("px4::DriverHost::Run: CtrlServer started\n");
+
+	msg_info("px4::DriverHost::Run: Starting StreamServer...\n");
+	if (!stream_server_->Start()) {
+		msg_err("px4::DriverHost::Run: StreamServer::Start() failed (err=%lu)\n", GetLastError());
 		throw DriverHostError("px4::DriverHost::Run: StreamServer::Start() failed.");
+	}
+	msg_info("px4::DriverHost::Run: StreamServer started\n");
+
 	/* カード用パイプだけの障害で既存の TS 受信を停止させない */
 	card_server_->Start();
 
+	msg_info("px4::DriverHost::Run: Setting StartupEvent signaled\n");
 	SetEvent(startup_event_);
 
 	{

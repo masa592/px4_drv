@@ -14,14 +14,17 @@ CatalogFile=px4_drv_winusb.cat
 
 [PXS1UD_WinUSB.ntx86]
 %PXS1UD_WinUSB.DeviceDescV1%=PXS1UD_WinUSB.DeviceInstall,USB\VID_0511&PID_0246
+%PXS1UD_WinUSB.DeviceDescV1Alt%=PXS1UD_WinUSB.DeviceInstall,USB\VID_0511&PID_0045
 %PXS1UD_WinUSB.DeviceDescV2%=PXS1UD_WinUSB.DeviceInstall,USB\VID_3275&PID_0080
 
 [PXS1UD_WinUSB.ntamd64]
 %PXS1UD_WinUSB.DeviceDescV1%=PXS1UD_WinUSB.DeviceInstall,USB\VID_0511&PID_0246
+%PXS1UD_WinUSB.DeviceDescV1Alt%=PXS1UD_WinUSB.DeviceInstall,USB\VID_0511&PID_0045
 %PXS1UD_WinUSB.DeviceDescV2%=PXS1UD_WinUSB.DeviceInstall,USB\VID_3275&PID_0080
 
 [PXS1UD_WinUSB.ntarm64]
 %PXS1UD_WinUSB.DeviceDescV1%=PXS1UD_WinUSB.DeviceInstall,USB\VID_0511&PID_0246
+%PXS1UD_WinUSB.DeviceDescV1Alt%=PXS1UD_WinUSB.DeviceInstall,USB\VID_0511&PID_0045
 %PXS1UD_WinUSB.DeviceDescV2%=PXS1UD_WinUSB.DeviceInstall,USB\VID_3275&PID_0080
 
 [PXS1UD_WinUSB.DeviceInstall]
@@ -45,4 +48,5 @@ HKR,,DeviceInterfaceGUIDs,0x00010000,"{7D1A23D8-8A31-4F98-8B42-4A7389146522}"
 [Strings]
 AuthorName="nns779"
 PXS1UD_WinUSB.DeviceDescV1="PLEX PX-S1UD V1.0 ISDB-T Receiver Device (WinUSB)"
+PXS1UD_WinUSB.DeviceDescV1Alt="PLEX PX-S1UD ISDB-T Receiver Device (WinUSB)"
 PXS1UD_WinUSB.DeviceDescV2="PLEX PX-S1UD V2.0 ISDB-T Receiver Device (WinUSB)"

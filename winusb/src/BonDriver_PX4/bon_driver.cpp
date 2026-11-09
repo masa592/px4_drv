@@ -297,8 +297,10 @@ const BOOL BonDriver::OpenTuner()
 		}
 
 		if (!startup_event) {
+			msg_err("BonDriver::OpenTuner: CreateEventW(\"DriverHost_PX4_StartupEvent\") failed (err=%lu)\n", GetLastError());
 			throw BonDriverError("BonDriver::OpenTuner: CreateEventW(\"DriverHost_PX4_StartupEvent\") failed.");
 		} else if (GetLastError() != ERROR_ALREADY_EXISTS) {
+			msg_info("BonDriver::OpenTuner: launching DriverHost_PX4 from %ls\n", driver_host_path_.c_str());
 			STARTUPINFO si;
 			PROCESS_INFORMATION pi;
 
@@ -307,7 +309,9 @@ const BOOL BonDriver::OpenTuner()
 			memset(&pi, 0, sizeof(pi));
 
 			if (!CreateProcessW(driver_host_path_.c_str(), nullptr, nullptr, nullptr, FALSE, 0, nullptr, nullptr, &si, &pi)) {
+				DWORD err = GetLastError();
 				CloseHandle(startup_event);
+				msg_err("BonDriver::OpenTuner: CreateProcessW(\"%ls\") failed (err=%lu)\n", driver_host_path_.c_str(), err);
 				throw BonDriverError("BonDriver::OpenTuner: CreateProcessW() failed.");
 			}
 
@@ -315,11 +319,15 @@ const BOOL BonDriver::OpenTuner()
 			CloseHandle(pi.hProcess);
 		}
 
+		msg_info("BonDriver::OpenTuner: waiting for DriverHost_PX4 startup event...\n");
 		st = WaitForSingleObject(startup_event, 10000);
 		CloseHandle(startup_event);
 
-		if (st != WAIT_OBJECT_0)
+		if (st != WAIT_OBJECT_0) {
+			msg_err("BonDriver::OpenTuner: WaitForSingleObject(StartupEvent) timed out or failed (st=%lu, err=%lu)\n", st, GetLastError());
 			throw BonDriverError("BonDriver::OpenTuner: WaitForSingleObject() failed.");
+		}
+		msg_info("BonDriver::OpenTuner: DriverHost_PX4 is ready\n");
 
 		std::unique_ptr<px4::PipeClient> ctrl_pipe(new px4::PipeClient());
 		px4::PipeClient::PipeClientConfig ctrl_pipe_config;
@@ -328,8 +336,12 @@ const BOOL BonDriver::OpenTuner()
 		ctrl_pipe_config.stream_read = false;
 		ctrl_pipe_config.timeout = pipe_timeout_;
 
-		if (!ctrl_pipe->Connect(L"px4_ctrl_pipe", ctrl_pipe_config, nullptr))
+		msg_info("BonDriver::OpenTuner: connecting to control pipe (timeout=%lu ms)...\n", pipe_timeout_);
+		if (!ctrl_pipe->Connect(L"px4_ctrl_pipe", ctrl_pipe_config, nullptr)) {
+			msg_err("BonDriver::OpenTuner: control pipe connect failed (err=%lu)\n", GetLastError());
 			throw BonDriverError("BonDriver::OpenTuner: control pipe: cannot connect.");
+		}
+		msg_info("BonDriver::OpenTuner: control pipe connected\n");
 
 		ctrl_client_.SetPipe(ctrl_pipe);
 
