@@ -1,6 +1,6 @@
 # PLEX PX-S1UD WinUSB ドライバ & BonDriver 利用ガイド
 
-本リポジトリでは、PLEX PX-S1UD (V1.0 / V2.0) を Windows 上でカーネルドライバ署名の強制を無効化することなく、Windows 標準の **WinUSB** 経由で安定動作させるための **WinUSB ドライバ定義 (.inf)** と **BonDriver (`BonDriver_S1UD_WinUSB.dll`)** を提供しています。
+本リポジトリでは、PLEX PX-S1UD (V1.0 / V2.0) を Windows 上でカーネルドライバ署名の強制を無効化することなく、Windows 標準の **WinUSB** 経由で安定動作させるための **WinUSB ドライバ定義 (.inf)** と **BonDriver (`BonDriver_S1UD.dll` / `DriverHost_PX4.exe`)** を提供しています。
 
 ---
 
@@ -61,35 +61,11 @@ TVTest/ (または EDCB/BonDriver/)
   └── isdbt_rio.inp (または isdbt_nova_12mhz_b0.inp)
 ```
 
-### 設定ファイル (`BonDriver_S1UD_WinUSB.ini`) の項目
-
-```ini
-[SYSTEM]
-; チューナー識別名 (TVTestなどの表示名)
-TunerName="PX-S1UD"
-
-; 対象チューナーのインデックス (0から始まる連番)
-; DLLファイル名末尾の数字 (例: BonDriver_S1UD_WinUSB_0.dll -> 0) が優先されます
-DeviceIndex=0
-
-; Siano ファームウェアファイルのパス (空欄時はDLLと同じフォルダの isdbt_rio.inp 等を自動検索)
-FirmwarePath=""
-
-; NULLパケット (PID=0x1FFF) を破棄してPC負荷を軽減するかどうか (0: 無効, 1: 有効)
-DiscardNullPackets=0
-```
-
 ---
 
 ## 5. 複数台の同時利用（複数枚刺し）
 
-PC に 2 台以上の PX-S1UD を接続している場合、以下のように DLL ファイルを複製・リネームするだけで、各チューナーを個別に排他制御して同時利用できます。
-
-- 1台目用: `BonDriver_S1UD_WinUSB_0.dll` (自動的に DeviceIndex=0 をオープン)
-- 2台目用: `BonDriver_S1UD_WinUSB_1.dll` (自動的に DeviceIndex=1 をオープン)
-- 3台目用: `BonDriver_S1UD_WinUSB_2.dll` (自動的に DeviceIndex=2 をオープン)
-
-各 DLL はプロセス間ミューテックス（`Global\PX_S1UD_Tuner_Lock_<Index>`）により排他制御されるため、チューナーの競合やクラッシュを防ぎます。
+PC に 2 台以上の PX-S1UD を接続している場合でも、`DriverHost_PX4` のデバイス列挙および名前付きパイプアーキテクチャにより、各チューナーを自動検出して排他制御しながら安定して同時利用できます。
 
 ---
 
@@ -101,15 +77,14 @@ PC に 2 台以上の PX-S1UD を接続している場合、以下のように D
 
 ### 手動ビルド手順
 1. コマンドプロンプトまたは PowerShell を開きます。
-2. リポジトリ直下の `build_x64.cmd` を実行します。
+2. `winusb/px4_winusb.sln` を MSBuild でビルドします。
    ```cmd
-   build_x64.cmd
+   msbuild winusb\px4_winusb.sln /p:Configuration=Release-static /p:Platform=x64 /m
    ```
-3. ビルドに成功すると、`winusb\build\x64\Release-static\BonDriver_S1UD_WinUSB.dll` に生成されます。
 
 全機種パッケージングを含めてビルドする場合は、PowerShell で以下を実行してください:
 ```powershell
 Set-Location winusb
 .\build.ps1
 ```
-`winusb/dist/BonDriver_S1UD_WinUSB_64bit/` および `32bit/` に必要なファイル一式が出力されます。
+`winusb/dist/BonDriver_S1UD_64bit/` および `32bit/` に必要なファイル一式が出力されます。

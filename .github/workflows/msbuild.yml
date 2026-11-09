@@ -34,9 +34,9 @@ jobs:
         run: |
           ./verify.ps1 -DriverPath ../inf
 
-      - name: Build BonDriver_S1UD_WinUSB (x64 Release)
+      - name: Build px4_winusb solution (x64 Release)
         run: |
-          .\build_x64.cmd
+          msbuild winusb/px4_winusb.sln /p:Configuration=Release-static /p:Platform=x64 /m
 
       - name: Build and Run TS Framer Unit Tests (x64)
         run: |
@@ -59,14 +59,6 @@ jobs:
               @{
                   Dir = 'dist/BonDriver_S1UD_64bit'
                   Files = @('BonDriver_S1UD.dll', 'BonDriver_S1UD.ini', 'BonDriver_S1UD-T.ChSet.txt', 'DriverHost_PX4.exe', 'DriverHost_PX4.ini', 'WinSCard.dll', 'PX-S1UD.inf')
-              },
-              @{
-                  Dir = 'dist/BonDriver_S1UD_WinUSB_32bit'
-                  Files = @('BonDriver_S1UD_WinUSB.dll', 'BonDriver_S1UD_WinUSB.ini')
-              },
-              @{
-                  Dir = 'dist/BonDriver_S1UD_WinUSB_64bit'
-                  Files = @('BonDriver_S1UD_WinUSB.dll', 'BonDriver_S1UD_WinUSB.ini')
               }
           )
           foreach ($entry in $s1ud_dirs) {
