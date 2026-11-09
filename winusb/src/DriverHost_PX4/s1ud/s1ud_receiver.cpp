@@ -113,8 +113,8 @@ int S1udReceiver::ReadStat(px4::command::StatType type, std::int32_t &value)
 	switch (type) {
 	case px4::command::StatType::CNR:
 	{
-		DWORD now = GetTickCount();
-		if (now - last_stat_time_ < 500) {
+		auto now = std::chrono::steady_clock::now();
+		if (now - last_stat_time_ < std::chrono::milliseconds(500)) {
 			value = static_cast<std::int32_t>(last_signal_level_ * 1000.0f);
 			return 0;
 		}
