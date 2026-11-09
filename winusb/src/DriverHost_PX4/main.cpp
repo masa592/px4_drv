@@ -41,10 +41,20 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 		log_path = log_config.Get(L"DebugLogPath", log_path);
 	}
 
-	if (log_enabled && msg_open_file(log_path.c_str()))
-		msg_set_mode(static_cast<enum msg_mode>(MSG_MODE_DEBUGGER | MSG_MODE_LOG_FILE));
-	else
-		msg_set_mode(MSG_MODE_DEBUGGER);
+	// コマンドプロンプトやPowerShell等からの起動時にログを表示できるようコンソールにアタッチ
+	if (AttachConsole(ATTACH_PARENT_PROCESS)) {
+		FILE *fp;
+		freopen_s(&fp, "CONOUT$", "w", stdout);
+		freopen_s(&fp, "CONOUT$", "w", stderr);
+	}
+
+	int mode = MSG_MODE_DEBUGGER;
+	if (GetConsoleWindow() != nullptr)
+		mode |= MSG_MODE_CONSOLE;
+	// ログファイルが利用可能な場合は常に出力 (サイレント終了防止)
+	if (msg_open_file(log_path.c_str()))
+		mode |= MSG_MODE_LOG_FILE;
+	msg_set_mode(static_cast<enum msg_mode>(mode));
 #endif
 
 	msg_info("Start\n");

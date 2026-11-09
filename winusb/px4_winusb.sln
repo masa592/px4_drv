@@ -16,10 +16,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ringbuffer_purge_test", "te
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "channel_purge_test", "tests\channel_purge_test.vcxproj", "{9E4D1A68-27C3-4B5F-A0D9-6C8E3F71B255}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BonDriver_S1UD_WinUSB", "src\BonDriver_S1UD_WinUSB\BonDriver_S1UD_WinUSB.vcxproj", "{9E2C68A5-D3A4-4A1B-87BD-78EA41A0B2C9}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ts_framer_test", "tests\ts_framer_test.vcxproj", "{A87265B1-4241-4518-8A33-21DB28AE9F31}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -114,30 +110,6 @@ Global
 		{9E4D1A68-27C3-4B5F-A0D9-6C8E3F71B255}.Release-static|x64.Build.0 = Release-static|x64
 		{9E4D1A68-27C3-4B5F-A0D9-6C8E3F71B255}.Release-static|x86.ActiveCfg = Release-static|Win32
 		{9E4D1A68-27C3-4B5F-A0D9-6C8E3F71B255}.Release-static|x86.Build.0 = Release-static|Win32
-		{9E2C68A5-D3A4-4A1B-87BD-78EA41A0B2C9}.Debug|x64.ActiveCfg = Debug-static|x64
-		{9E2C68A5-D3A4-4A1B-87BD-78EA41A0B2C9}.Debug|x64.Build.0 = Debug-static|x64
-		{9E2C68A5-D3A4-4A1B-87BD-78EA41A0B2C9}.Debug|x86.ActiveCfg = Debug-static|Win32
-		{9E2C68A5-D3A4-4A1B-87BD-78EA41A0B2C9}.Debug|x86.Build.0 = Debug-static|Win32
-		{9E2C68A5-D3A4-4A1B-87BD-78EA41A0B2C9}.Release|x64.ActiveCfg = Release-static|x64
-		{9E2C68A5-D3A4-4A1B-87BD-78EA41A0B2C9}.Release|x64.Build.0 = Release-static|x64
-		{9E2C68A5-D3A4-4A1B-87BD-78EA41A0B2C9}.Release|x86.ActiveCfg = Release-static|Win32
-		{9E2C68A5-D3A4-4A1B-87BD-78EA41A0B2C9}.Release|x86.Build.0 = Release-static|Win32
-		{9E2C68A5-D3A4-4A1B-87BD-78EA41A0B2C9}.Release-static|x64.ActiveCfg = Release-static|x64
-		{9E2C68A5-D3A4-4A1B-87BD-78EA41A0B2C9}.Release-static|x64.Build.0 = Release-static|x64
-		{9E2C68A5-D3A4-4A1B-87BD-78EA41A0B2C9}.Release-static|x86.ActiveCfg = Release-static|Win32
-		{9E2C68A5-D3A4-4A1B-87BD-78EA41A0B2C9}.Release-static|x86.Build.0 = Release-static|Win32
-		{A87265B1-4241-4518-8A33-21DB28AE9F31}.Debug|x64.ActiveCfg = Release-static|x64
-		{A87265B1-4241-4518-8A33-21DB28AE9F31}.Debug|x64.Build.0 = Release-static|x64
-		{A87265B1-4241-4518-8A33-21DB28AE9F31}.Debug|x86.ActiveCfg = Release-static|Win32
-		{A87265B1-4241-4518-8A33-21DB28AE9F31}.Debug|x86.Build.0 = Release-static|Win32
-		{A87265B1-4241-4518-8A33-21DB28AE9F31}.Release|x64.ActiveCfg = Release-static|x64
-		{A87265B1-4241-4518-8A33-21DB28AE9F31}.Release|x64.Build.0 = Release-static|x64
-		{A87265B1-4241-4518-8A33-21DB28AE9F31}.Release|x86.ActiveCfg = Release-static|Win32
-		{A87265B1-4241-4518-8A33-21DB28AE9F31}.Release|x86.Build.0 = Release-static|Win32
-		{A87265B1-4241-4518-8A33-21DB28AE9F31}.Release-static|x64.ActiveCfg = Release-static|x64
-		{A87265B1-4241-4518-8A33-21DB28AE9F31}.Release-static|x64.Build.0 = Release-static|x64
-		{A87265B1-4241-4518-8A33-21DB28AE9F31}.Release-static|x86.ActiveCfg = Release-static|Win32
-		{A87265B1-4241-4518-8A33-21DB28AE9F31}.Release-static|x86.Build.0 = Release-static|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

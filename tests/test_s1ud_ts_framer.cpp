@@ -2,8 +2,8 @@
 #include <vector>
 #include <cassert>
 #include <cstring>
-#include "../winusb/src/BonDriver_S1UD_WinUSB/siano_proto.h"
-#include "../winusb/src/BonDriver_S1UD_WinUSB/ts_framer.hpp"
+#include "../winusb/src/DriverHost_PX4/s1ud/siano_proto.h"
+#include "../winusb/src/DriverHost_PX4/s1ud/ts_framer.hpp"
 
 // Test 1: Siano protocol structure sizes and message header initialization
 void TestSianoProto()
