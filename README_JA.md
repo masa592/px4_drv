@@ -37,24 +37,27 @@ Windows 標準の `WinUSB.sys` を PX-S1UD に割り当てます。以下のい�
 ## 3. ファームウェアの準備
 
 Siano チップ（SMS1140 / SMS2270）は起動時にファームウェアのロードが必要です。
-Linux 用ファームウェアファイル（`isdbt_rio.inp` または `isdbt_nova_12mhz_b0.inp`）を取得し、**`BonDriver_S1UD_WinUSB.dll` と同じフォルダ** に配置してください。
+Linux 用ファームウェアファイル（`isdbt_rio.inp` または `isdbt_nova_12mhz_b0.inp`）を取得し、**`DriverHost_PX4.exe` / `BonDriver_S1UD.dll` と同じフォルダ** に配置してください。
 
 - 配布元例: [Linux Firmware Repository (siano)](https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/siano)
   - `isdbt_rio.inp` (PX-S1UD V2.0 / Rio 向け)
   - `isdbt_nova_12mhz_b0.inp` (PX-S1UD V1.0 / Nova 向け)
 
-※ファームウェアの保存場所を別の場所に固定したい場合は、`.ini` 設定ファイルの `FirmwarePath` でフルパスを指定することも可能です。
-
 ---
 
-## 4. BonDriver の配置と設定
+## 4. BonDriver の配置と設定 (DriverHost_PX4 統合方式)
 
-TVTest や EDCB (EpgDataCap_Bon) などの BonDriver フォルダに以下のファイルを配置します。
+TVTest や EDCB (EpgDataCap_Bon) などの BonDriver フォルダに以下のパッケージファイルを配置します。
 
 ```text
 TVTest/ (または EDCB/BonDriver/)
-  ├── BonDriver_S1UD_WinUSB.dll
-  ├── BonDriver_S1UD_WinUSB.ini
+  ├── DriverHost_PX4.exe
+  ├── DriverHost_PX4.ini
+  ├── WinSCard.dll
+  ├── BonDriver_S1UD.dll
+  ├── BonDriver_S1UD.ini
+  ├── BonDriver_S1UD-T.ChSet.txt
+  ├── PX-S1UD.inf
   └── isdbt_rio.inp (または isdbt_nova_12mhz_b0.inp)
 ```
 

@@ -275,6 +275,8 @@
     <ClCompile Include="dt295\dt295_crypto.c" />
     <ClCompile Include="dt295\dt295_routes.c" />
     <ClCompile Include="dt295\transport.c" />
+    <ClCompile Include="s1ud\s1ud_device.cpp" />
+    <ClCompile Include="s1ud\s1ud_receiver.cpp" />
     <ClCompile Include="itedtv_bus_winusb.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="misc_win.c" />
@@ -323,6 +325,10 @@
     <ClInclude Include="dt295\dt295_crypto.h" />
     <ClInclude Include="dt295\dt295_routes.h" />
     <ClInclude Include="dt295\transport.h" />
+    <ClInclude Include="s1ud\s1ud_device.hpp" />
+    <ClInclude Include="s1ud\s1ud_receiver.hpp" />
+    <ClInclude Include="s1ud\siano_proto.h" />
+    <ClInclude Include="s1ud\ts_framer.hpp" />
     <ClInclude Include="misc_win.h" />
     <ClInclude Include="notify_icon.hpp" />
     <ClInclude Include="pipe_server.hpp" />
